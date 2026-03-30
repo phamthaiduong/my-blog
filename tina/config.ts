@@ -1,87 +1,62 @@
 import { defineConfig } from "tinacms";
 
+// Your hosting provider likely exposes this as an environment variable
+const branch =
+  process.env.GITHUB_BRANCH ||
+  process.env.VERCEL_GIT_COMMIT_REF ||
+  process.env.HEAD ||
+  "main";
+
 export default defineConfig({
-  branch: process.env.NEXT_PUBLIC_TINA_BRANCH || "main",
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
-  token: process.env.TINA_TOKEN || "",
+  branch,
+
+  // Get this from tina.io
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  // Get this from tina.io
+  token: process.env.TINA_TOKEN,
 
   build: {
     outputFolder: "admin",
     publicFolder: "public",
   },
-
+  // Uncomment to allow cross-origin requests from non-localhost origins
+  // during local development (e.g. GitHub Codespaces, Gitpod, Docker).
+  // Use 'private' to allow all private-network IPs (WSL2, Docker, etc.)
+  // server: {
+  //   allowedOrigins: ['https://your-codespace.github.dev'],
+  // },
   media: {
     tina: {
-      mediaRoot: "public/static/images/uploads",
+      mediaRoot: "",
       publicFolder: "public",
     },
   },
-
+  // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/r/content-modelling-collections/
   schema: {
     collections: [
       {
         name: "post",
-        label: "Blog Posts",
-        path: "data/blog",
-        format: "mdx",
+        label: "Posts",
+        path: "content/posts",
         fields: [
           {
             type: "string",
             name: "title",
-            label: "Tiêu đề (VI)",
-            required: true,
+            label: "Title",
             isTitle: true,
-          },
-          {
-            type: "string",
-            name: "title_en",
-            label: "Title (EN)",
-          },
-          {
-            type: "datetime",
-            name: "date",
-            label: "Ngày đăng",
             required: true,
-          },
-          {
-            type: "string",
-            name: "language",
-            label: "Ngôn ngữ",
-            options: [
-              { value: "vi", label: "Tiếng Việt" },
-              { value: "en", label: "English" },
-              { value: "both", label: "Song ngữ" },
-            ],
-          },
-          {
-            type: "string",
-            name: "tags",
-            label: "Tags",
-            list: true,
-          },
-          {
-            type: "string",
-            name: "summary",
-            label: "Tóm tắt",
-            ui: { component: "textarea" },
-          },
-          {
-            type: "image",
-            name: "images",
-            label: "Ảnh đại diện",
-          },
-          {
-            type: "boolean",
-            name: "draft",
-            label: "Bản nháp",
           },
           {
             type: "rich-text",
             name: "body",
-            label: "Nội dung",
+            label: "Body",
             isBody: true,
           },
         ],
+        ui: {
+          // This is an DEMO router. You can remove this to fit your site
+          router: ({ document }) => `/demo/blog/${document._sys.filename}`,
+        },
       },
     ],
   },
