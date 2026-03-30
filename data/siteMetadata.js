@@ -1,9 +1,9 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'My Blog',
-  author: 'Dương Phạm',
-  headerTitle: 'My Blog',
-  description: 'Blog cá nhân — viết về công nghệ, sản phẩm và cuộc sống.',
+  title: 'Dương Dzui Dzẻ',
+  author: 'DP',
+  headerTitle: 'Dương Dzui Dzẻ',
+  description: 'AI, Ai, Who?',
   language: 'vi-vn',
   theme: 'system',
   siteUrl: 'https://my-blog.vercel.app',
